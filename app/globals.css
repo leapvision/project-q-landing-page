@@ -1,26 +1,254 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Reading-room ground: warm near-black, like film on a switched-off lightbox */
+  --color-ground: #0d0c0a;
+  --color-panel: #14120e;
+  --color-line: #2b2820;
+  --color-line-faint: #1d1b15;
+  --color-bone: #e8e3d6;
+  --color-muted: #a29a82;
+  --color-dim: #5f594a; /* decorative marks only — never running text */
+  --color-accent: #e8720c;
+  --color-accent-bright: #f8821a;
+  --color-paper: #e8e3d6;
+  --color-ink: #14120e;
+  --color-ink-soft: #4b463c;
+
+  --font-sans: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+  --font-mono: var(--font-fragment), "Courier New", monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-ground);
+  color: var(--color-bone);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Browser surfaces carry the design too */
+::selection {
+  background: var(--color-accent);
+  color: var(--color-ground);
+}
+.on-paper ::selection,
+.on-paper::selection {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+:focus-visible {
+  outline: 1px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 0;
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line) var(--color-ground);
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-ground);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-line);
+  border: 2px solid var(--color-ground);
+}
+input,
+textarea,
+select {
+  caret-color: var(--color-accent);
+}
+
+/* Type at extremes: monumental display… */
+.display {
+  font-family: var(--font-sans);
+  font-stretch: 118%;
+  font-weight: 780;
+  letter-spacing: -0.028em;
+  line-height: 0.94;
+  text-wrap: balance;
+}
+.display-condensed {
+  font-family: var(--font-sans);
+  font-stretch: 76%;
+  font-weight: 640;
+  letter-spacing: -0.005em;
+  line-height: 1.02;
+}
+
+/* …or tiny mono marginalia. Little middle. */
+.label {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+}
+.mono-data {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Film grain over the whole ground — processed, never raw */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 240px 240px;
+}
+
+/* ——— shared motion for the direction variants (d1–d4) ——— */
+@keyframes slot-scan {
+  0% {
+    top: 0%;
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+@keyframes marquee-x {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes dash-flow {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+@keyframes sweep-x {
+  0% {
+    left: -6rem;
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+@keyframes grid-pan {
+  from {
+    background-position:
+      0 0,
+      0 0;
+  }
+  to {
+    background-position:
+      72px 72px,
+      72px 72px;
+  }
+}
+@keyframes flow-pulse {
+  from {
+    left: -4rem;
+  }
+  to {
+    left: 104%;
+  }
+}
+@keyframes glow-slide {
+  0% {
+    background-position: 0%;
+  }
+  100% {
+    background-position: 200%;
+  }
+}
+/* d5: waitlist success — the constellation's "found" tick */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes ring-pop {
+  0% {
+    transform: scale(0.3);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+/* d5: footer Crookes tube fires on hover */
+@keyframes beam-fire {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes rays-flicker {
+  0%,
+  20%,
+  60%,
+  100% {
+    opacity: 1;
+  }
+  10%,
+  40%,
+  80% {
+    opacity: 0.25;
+  }
+}
+@keyframes tint-flash {
+  0% {
+    opacity: 0;
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
