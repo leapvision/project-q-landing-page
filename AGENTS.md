@@ -52,7 +52,7 @@ The forms in `components/WaitlistForm.tsx` send JSON to `POST /api/waitlist`. `e
 
 The route uses SendGrid to email accepted submissions to the configured internal recipient. That notification is the waitlist record; the application intentionally has no database or local-file persistence. The route returns success only after SendGrid accepts the internal notification. Applicant confirmation is optional and must not turn an already accepted internal notification into a failed form submission.
 
-The required server-only variables are `SENDGRID_API_KEY`, `WAITLIST_FROM_EMAIL`, and `WAITLIST_TO_EMAIL`. `WAITLIST_SEND_CONFIRMATION=true` enables applicant confirmations. Keep secrets out of the repository and maintain placeholder-only documentation in `.env.example`.
+The required server-only variables are `SENDGRID_API_KEY`, `WAITLIST_FROM_EMAIL`, and `WAITLIST_TO_EMAIL`. `WAITLIST_SEND_CONFIRMATION=true` enables applicant confirmations and requires an active dynamic-template ID in `SENDGRID_CONFIRMATION_TEMPLATE_ID`. Keep secrets out of the repository and maintain placeholder-only documentation in `.env.example`.
 
 ## Working practices
 

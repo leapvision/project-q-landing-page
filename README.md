@@ -70,11 +70,17 @@ Set these server-side environment variables locally and in Vercel:
 | `WAITLIST_FROM_EMAIL` | Yes | Sender on a SendGrid-authenticated domain |
 | `WAITLIST_TO_EMAIL` | Yes | Internal notification recipient; accepts a comma-separated list |
 | `WAITLIST_SEND_CONFIRMATION` | No | Set to `true` to email the applicant after the internal notification succeeds |
+| `SENDGRID_CONFIRMATION_TEMPLATE_ID` | When confirmations are enabled | Active SendGrid Dynamic Template ID beginning with `d-` |
 
 Keep `WAITLIST_SEND_CONFIRMATION=false` in Vercel Preview while testing, then
 set it to `true` in Production when applicant confirmations are ready. If a
 confirmation fails, the submission still succeeds because the internal
 notification has already been accepted.
+
+Applicant confirmations use a SendGrid Dynamic Template rather than HTML in
+the route. A branded starting template and setup instructions are available in
+`emails/`. The application supplies `first_name`, `full_name`, `organisation`,
+and `current_year` as Handlebars template data.
 
 The forms include a silent honeypot for basic bot filtering. For a public launch
 with significant automated traffic, add a shared rate limiter or a challenge

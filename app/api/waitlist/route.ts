@@ -70,30 +70,6 @@ function notificationHtml(record: WaitlistRecord) {
     </div>`;
 }
 
-function confirmationText(name: string | null) {
-  const greeting = name ? `Hi ${name},` : "Hello,";
-  return [
-    greeting,
-    "",
-    "You're on the Project Q waitlist. We'll be in touch as early-access onboarding opens.",
-    "",
-    "Project Q is in development, and onboarding runs in deliberately small waves.",
-    "",
-    "— The Project Q team",
-  ].join("\n");
-}
-
-function confirmationHtml(name: string | null) {
-  const greeting = name ? `Hi ${escapeHtml(name)},` : "Hello,";
-  return `
-    <div style="font-family:Arial,sans-serif;color:#17150f;line-height:1.6;max-width:600px">
-      <p>${greeting}</p>
-      <p>You're on the Project Q waitlist. We'll be in touch as early-access onboarding opens.</p>
-      <p>Project Q is in development, and onboarding runs in deliberately small waves.</p>
-      <p>— The Project Q team</p>
-    </div>`;
-}
-
 function sendGridConfig() {
   const apiKey = process.env.SENDGRID_API_KEY?.trim();
   const from = process.env.WAITLIST_FROM_EMAIL?.trim();
@@ -101,14 +77,25 @@ function sendGridConfig() {
     .split(",")
     .map((email) => email.trim())
     .filter(Boolean);
+  const sendConfirmation = process.env.WAITLIST_SEND_CONFIRMATION === "true";
+  const confirmationTemplateId =
+    process.env.SENDGRID_CONFIRMATION_TEMPLATE_ID?.trim();
 
-  if (!apiKey || !from || to.length === 0) return null;
+  if (
+    !apiKey ||
+    !from ||
+    to.length === 0 ||
+    (sendConfirmation && !confirmationTemplateId?.startsWith("d-"))
+  ) {
+    return null;
+  }
 
   return {
     apiKey,
     from,
     to,
-    sendConfirmation: process.env.WAITLIST_SEND_CONFIRMATION === "true",
+    sendConfirmation,
+    confirmationTemplateId,
   };
 }
 
@@ -192,9 +179,13 @@ export async function POST(request: Request) {
         to: record.email,
         from: config.from,
         replyTo: config.to[0],
-        subject: "You're on the Project Q waitlist",
-        text: confirmationText(record.name),
-        html: confirmationHtml(record.name),
+        templateId: config.confirmationTemplateId!,
+        dynamicTemplateData: {
+          first_name: record.name?.split(/\s+/)[0] ?? "",
+          full_name: record.name ?? "",
+          organisation: record.org ?? "",
+          current_year: new Date().getUTCFullYear(),
+        },
         categories: ["project-q-waitlist-confirmation"],
         trackingSettings: {
           clickTracking: { enable: false, enableText: false },
