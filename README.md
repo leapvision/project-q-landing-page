@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Project Q landing page
 
-## Getting Started
+Marketing and early-access landing page for Project Q, Drongo AI's medical-imaging data platform. The site presents the product's archive-to-dataset workflow, platform capabilities, target teams, and phased early-access programme.
 
-First, run the development server:
+Project Q is currently in development. The product imagery on the page consists of concept renders, and Agent Q outputs are presented as non-diagnostic.
+
+## What is implemented
+
+- Responsive single-page marketing site with sections for infrastructure, platform capabilities, early access, teams, and the waitlist
+- Animated hero, scroll reveals, pipeline graphics, and reduced-motion support
+- Inline and full waitlist forms with client- and server-side email validation
+- `POST /api/waitlist` endpoint for recording early-access signups
+- Tailwind CSS 4 styling and Google fonts loaded through `next/font`
+
+## Tech stack
+
+- Next.js 16 with the App Router
+- React 19
+- TypeScript
+- Tailwind CSS 4
+
+## Run locally
+
+Install dependencies and start the development server:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+No environment variables are required for the current local implementation.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Available scripts
 
-## Learn More
+```bash
+npm run dev    # start the development server
+npm run build  # create a production build
+npm run start  # serve the production build
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Waitlist behavior
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The waitlist forms submit JSON to `POST /api/waitlist`. A valid submission may contain:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```json
+{
+  "email": "person@example.com",
+  "name": "Optional name",
+  "org": "Optional organisation",
+  "building": "Optional description of the team's work"
+}
+```
 
-## Deploy on Vercel
+`email` is required. The other fields are optional and are trimmed and length-limited by the route handler.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+For local development, each accepted signup is written to the server log and, on a best-effort basis, appended to `waitlist-signups.jsonl` in the project root. This is not durable production storage: serverless filesystems may be read-only or ephemeral, and the current endpoint does not notify the team. Connect the route to a CRM, database, or mailing-list provider before launch.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Project structure
+
+```text
+app/
+  api/waitlist/route.ts  Waitlist API endpoint
+  globals.css            Global theme and motion styles
+  layout.tsx             Root layout, fonts, and metadata
+  page.tsx               Landing-page content and sections
+components/              Interactive forms, motion, and illustrations
+public/                  Product concept renders and static assets
+```
+
+The landing page is implemented in `app/page.tsx`; reusable client-side behavior lives in `components/`.
