@@ -5,6 +5,18 @@ import { GlowButton } from "@/components/GlowButton";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
+function Honeypot({ id }: { id: string }) {
+  return (
+    <div
+      aria-hidden="true"
+      className="absolute -left-[10000px] top-auto h-px w-px overflow-hidden"
+    >
+      <label htmlFor={id}>Website</label>
+      <input id={id} name="website" type="text" tabIndex={-1} autoComplete="off" />
+    </div>
+  );
+}
+
 /**
  * Waitlist capture for d5 (pre-launch CTA). Two shapes: "inline" — a single
  * email + button row for the hero, on ivory; "full" — name, organisation,
@@ -52,7 +64,8 @@ export function WaitlistForm({ variant }: { variant: "inline" | "full" }) {
 
   const form =
     variant === "inline" ? (
-      <form onSubmit={onSubmit} noValidate className="w-full max-w-[430px]">
+      <form onSubmit={onSubmit} noValidate className="relative w-full max-w-[430px]">
+        <Honeypot id="wl-website" />
         <div className="flex flex-wrap items-stretch gap-2 sm:flex-nowrap">
           <label htmlFor="wl-email" className="sr-only">
             Work email
@@ -78,7 +91,8 @@ export function WaitlistForm({ variant }: { variant: "inline" | "full" }) {
         </p>
       </form>
     ) : (
-      <form onSubmit={onSubmit} noValidate className="grid gap-5">
+      <form onSubmit={onSubmit} noValidate className="relative grid gap-5">
+        <Honeypot id="wlf-website" />
         <div className="grid gap-5 sm:grid-cols-2">
           <div>
             <label htmlFor="wlf-name" className={label}>

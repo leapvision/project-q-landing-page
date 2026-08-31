@@ -9,7 +9,8 @@ Project Q is currently in development. The product imagery on the page consists 
 - Responsive single-page marketing site with sections for infrastructure, platform capabilities, early access, teams, and the waitlist
 - Animated hero, scroll reveals, pipeline graphics, and reduced-motion support
 - Inline and full waitlist forms with client- and server-side email validation
-- `POST /api/waitlist` endpoint for recording early-access signups
+- SendGrid-backed `POST /api/waitlist` endpoint for early-access signups
+- Bot honeypot and optional applicant confirmation email
 - Tailwind CSS 4 styling and Google fonts loaded through `next/font`
 
 ## Tech stack
@@ -30,7 +31,8 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-No environment variables are required for the current local implementation.
+Copy `.env.example` to `.env.local` and provide your SendGrid settings before
+testing the waitlist. The API key must remain server-only.
 
 ## Available scripts
 
@@ -55,7 +57,35 @@ The waitlist forms submit JSON to `POST /api/waitlist`. A valid submission may c
 
 `email` is required. The other fields are optional and are trimmed and length-limited by the route handler.
 
-For local development, each accepted signup is written to the server log and, on a best-effort basis, appended to `waitlist-signups.jsonl` in the project root. This is not durable production storage: serverless filesystems may be read-only or ephemeral, and the current endpoint does not notify the team. Connect the route to a CRM, database, or mailing-list provider before launch.
+An accepted submission sends a notification through SendGrid to the configured
+internal recipient. That notification is the waitlist record; this project does
+not persist submissions to a database or local file. The route returns success
+only after SendGrid accepts the internal notification.
+
+Set these server-side environment variables locally and in Vercel:
+
+| Variable | Required | Purpose |
+| --- | --- | --- |
+| `SENDGRID_API_KEY` | Yes | Restricted SendGrid API key with Mail Send access |
+| `WAITLIST_FROM_EMAIL` | Yes | Sender on a SendGrid-authenticated domain |
+| `WAITLIST_TO_EMAIL` | Yes | Internal notification recipient; accepts a comma-separated list |
+| `WAITLIST_SEND_CONFIRMATION` | No | Set to `true` to email the applicant after the internal notification succeeds |
+
+Keep `WAITLIST_SEND_CONFIRMATION=false` in Vercel Preview while testing, then
+set it to `true` in Production when applicant confirmations are ready. If a
+confirmation fails, the submission still succeeds because the internal
+notification has already been accepted.
+
+The forms include a silent honeypot for basic bot filtering. For a public launch
+with significant automated traffic, add a shared rate limiter or a challenge
+service; in-memory rate limiting is not reliable across serverless instances.
+
+### Vercel Preview
+
+Connect the repository to Vercel and push a non-production branch to receive a
+temporary Preview Deployment URL. Add the variables above to the Preview scope
+first. After testing, add the corresponding Production values, merge to the
+production branch, and attach the registered domain in the Vercel project.
 
 ## Project structure
 

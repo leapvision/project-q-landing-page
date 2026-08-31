@@ -50,9 +50,9 @@ Use the `@/*` TypeScript path alias for imports from the repository root.
 
 The forms in `components/WaitlistForm.tsx` send JSON to `POST /api/waitlist`. `email` is required; `name`, `org`, and `building` are optional.
 
-The route currently logs accepted records and makes a best-effort append to `waitlist-signups.jsonl`. This is local development behavior, not durable production storage: a serverless filesystem may be read-only or ephemeral, and no team notification is sent. Do not describe the waitlist as production-ready until it is connected to an external durable system.
+The route uses SendGrid to email accepted submissions to the configured internal recipient. That notification is the waitlist record; the application intentionally has no database or local-file persistence. The route returns success only after SendGrid accepts the internal notification. Applicant confirmation is optional and must not turn an already accepted internal notification into a failed form submission.
 
-No environment variables are required by the current implementation. Document any new required variables without committing secrets.
+The required server-only variables are `SENDGRID_API_KEY`, `WAITLIST_FROM_EMAIL`, and `WAITLIST_TO_EMAIL`. `WAITLIST_SEND_CONFIRMATION=true` enables applicant confirmations. Keep secrets out of the repository and maintain placeholder-only documentation in `.env.example`.
 
 ## Working practices
 
