@@ -19,7 +19,7 @@ const bricolage = Bricolage_Grotesque({
 export const metadata: Metadata = {
   title: "Project Q — foundational data infrastructure for imaging AI",
   description:
-    "Project Q takes medical-imaging archives from raw DICOM to validated training datasets. Direction 5: cinematic architecture on the brand palette.",
+    "Project Q takes medical-imaging archives from raw DICOM to validated training datasets — search, curation, annotation, and versioned export with full lineage.",
 };
 
 const CONTRACT = `<!--
@@ -191,7 +191,7 @@ export default function D5() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/hero-query-4.png"
-                  alt="Project Q on a desktop monitor in a lamp-lit workspace — a natural-language query resolving into interpreted filters, including a matched radiology-report phrase, over a cohort of 1,284 studies"
+                  alt="Project Q on a desktop monitor in a lamp-lit workspace — a natural-language query resolving into interpreted filters, including a matched radiology-report phrase, over a cohort of 1,284 studies (concept render)"
                   className="h-full w-full object-cover"
                 />
                 {/* light film grain so the still sits in the page's material world */}
