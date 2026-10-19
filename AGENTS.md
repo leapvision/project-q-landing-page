@@ -42,7 +42,8 @@ Use the `@/*` TypeScript path alias for imports from the repository root.
 
 - Preserve the established warm-ivory, near-black, and diagnostic-red visual system unless the requested change explicitly alters the art direction.
 - Keep the page responsive and maintain visible keyboard focus, semantic labels, useful alternative text, and reduced-motion behavior.
-- Use `next/font` for font loading. The current design uses Archivo and Fragment Mono globally, with DM Sans and Bricolage Grotesque on the landing page.
+- Use `next/font` for font loading. The design uses DM Sans (`font-sans`) and Fragment Mono (`font-mono`), both loaded once in `app/layout.tsx`.
+- Use the colour tokens defined in `app/globals.css` (`bg-ivory`, `text-accent`, `border-ink/15`, …) rather than raw hex values. `DESIGN.md` documents the tokens and patterns.
 - Reuse existing motion and form components before introducing parallel implementations.
 - Keep product claims aligned across visible copy, metadata, alternative text, and documentation.
 

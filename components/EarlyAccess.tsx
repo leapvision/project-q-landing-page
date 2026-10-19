@@ -3,8 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 
 const MONO = "font-mono text-[10.5px] tracking-[0.18em] uppercase";
-const INK = "#17150f";
-const RED = "#a31621";
 
 // deterministic scatter so the figure is stable across renders
 function lcg(seed: number) {
@@ -58,10 +56,10 @@ const STEPS = ["waitlist", "intro call", "connect archive", "first cohort"];
 
 function StepsCaption() {
   return (
-    <p className={`${MONO} mt-5 flex flex-wrap items-baseline gap-x-2.5 gap-y-1.5 border-t border-[#17150f]/15 pt-4 text-[#6b6656]`}>
+    <p className={`${MONO} mt-5 flex flex-wrap items-baseline gap-x-2.5 gap-y-1.5 border-t border-ink/15 pt-4 text-muted`}>
       {STEPS.map((s, i) => (
         <span key={s} className="flex items-baseline gap-x-2.5">
-          <span className={i === 0 ? "text-[#a31621]" : ""}>{s}</span>
+          <span className={i === 0 ? "text-accent" : ""}>{s}</span>
           {i < STEPS.length - 1 && <span aria-hidden>→</span>}
         </span>
       ))}
@@ -153,21 +151,21 @@ export function EarlyAccessFigure() {
           </mask>
         </defs>
         {dots.map((d, i) => (
-          <circle key={i} cx={d.x} cy={d.y} r={d.r} fill={INK} opacity={d.o} />
+          <circle key={i} cx={d.x} cy={d.y} r={d.r} className="fill-ink" opacity={d.o} />
         ))}
         <path
           d={path}
           mask="url(#lasso-draw)"
           fill="none"
-          stroke={RED}
+          className="stroke-accent"
           strokeOpacity="0.75"
           strokeWidth="1.1"
           strokeDasharray="4 5"
           strokeLinecap="round"
         />
-        <circle cx={cx + 10} cy={cy - 8} r="3" fill={RED} style={late("1.7s")} />
+        <circle cx={cx + 10} cy={cy - 8} r="3" className="fill-accent" style={late("1.7s")} />
         <g style={late("1.45s")}>
-          <line x1={cx - 30} y1={cy - 26} x2={cx - 74} y2={cy - 62} stroke={INK} strokeOpacity="0.35" strokeWidth="1" />
+          <line x1={cx - 30} y1={cy - 26} x2={cx - 74} y2={cy - 62} className="stroke-ink" strokeOpacity="0.35" strokeWidth="1" />
           <text
             x={cx - 80}
             y={cy - 66}
@@ -175,7 +173,7 @@ export function EarlyAccessFigure() {
             fontFamily="var(--font-fragment), monospace"
             fontSize="10"
             letterSpacing="1.6"
-            fill="#6b6656"
+            className="fill-muted"
           >
             WAVE 01
           </text>

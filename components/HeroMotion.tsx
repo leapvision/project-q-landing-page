@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 export type HeroFx = "dots" | "scan" | "grid" | "flow";
 
+// canvas needs raw channels — keep in sync with --color-ink / --color-accent
 const INK = "23, 21, 15";
 const RED = "163, 22, 33";
 

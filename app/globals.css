@@ -1,21 +1,33 @@
 @import "tailwindcss";
 
-@theme inline {
-  /* Reading-room ground: warm near-black, like film on a switched-off lightbox */
-  --color-ground: #0d0c0a;
-  --color-panel: #14120e;
-  --color-line: #2b2820;
-  --color-line-faint: #1d1b15;
-  --color-bone: #e8e3d6;
-  --color-muted: #a29a82;
-  --color-dim: #5f594a; /* decorative marks only — never running text */
-  --color-accent: #e8720c;
-  --color-accent-bright: #f8821a;
-  --color-paper: #e8e3d6;
-  --color-ink: #14120e;
-  --color-ink-soft: #4b463c;
+/*
+ * Drongo design tokens. Colours are emitted as CSS variables on :root
+ * (static) so SVG, canvas, and inline styles can read them too.
+ * Ivory is the ground, ink is the type and the cinematic sections, and the
+ * diagnostic red is reserved for action and emphasis.
+ */
+@theme static {
+  --color-ivory: #f5f0e6;
+  --color-ivory-raised: #faf6ec;
+  --color-ivory-deep: #ede7d9;
+  --color-ink: #17150f;
+  --color-ink-raised: #201d15;
+  --color-muted: #6b6656;
+  --color-muted-inverse: #a89f8d;
+  --color-placeholder: #8a8172;
+  --color-line-inverse: #3a352a;
+  --color-line-inverse-strong: #4a4436;
+  --color-connector: #6b6353;
+  --color-chip: #d8d0bf;
+  --color-accent: #a31621;
+  --color-accent-hover: #8c101a;
+  --color-accent-bright: #e05561; /* red text and marks on ink */
+  --color-accent-deep: #7a1019; /* glow sweep only */
+  --color-accent-glow: #d8434f; /* glow sweep only */
+}
 
-  --font-sans: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+@theme inline {
+  --font-sans: var(--font-dm), system-ui, sans-serif;
   --font-mono: var(--font-fragment), "Courier New", monospace;
 }
 
@@ -24,8 +36,8 @@ html {
 }
 
 body {
-  background: var(--color-ground);
-  color: var(--color-bone);
+  background: var(--color-ivory);
+  color: var(--color-ink);
   font-family: var(--font-sans);
   font-size: 15px;
   line-height: 1.6;
@@ -35,32 +47,16 @@ body {
 /* Browser surfaces carry the design too */
 ::selection {
   background: var(--color-accent);
-  color: var(--color-ground);
-}
-.on-paper ::selection,
-.on-paper::selection {
-  background: var(--color-ink);
-  color: var(--color-paper);
+  color: var(--color-ivory);
 }
 :focus-visible {
-  outline: 1px solid var(--color-accent);
+  outline: 2px solid var(--color-accent);
   outline-offset: 3px;
-  border-radius: 0;
 }
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--color-line) var(--color-ground);
-}
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-::-webkit-scrollbar-track {
-  background: var(--color-ground);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--color-line);
-  border: 2px solid var(--color-ground);
+  scrollbar-color: color-mix(in srgb, var(--color-ink) 30%, transparent)
+    var(--color-ivory);
 }
 input,
 textarea,
@@ -68,74 +64,17 @@ select {
   caret-color: var(--color-accent);
 }
 
-/* Type at extremes: monumental display… */
-.display {
-  font-family: var(--font-sans);
-  font-stretch: 118%;
-  font-weight: 780;
-  letter-spacing: -0.028em;
-  line-height: 0.94;
-  text-wrap: balance;
-}
-.display-condensed {
-  font-family: var(--font-sans);
-  font-stretch: 76%;
-  font-weight: 640;
-  letter-spacing: -0.005em;
-  line-height: 1.02;
-}
-
-/* …or tiny mono marginalia. Little middle. */
-.label {
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  line-height: 1.5;
-  font-variant-numeric: tabular-nums;
-}
-.mono-data {
-  font-family: var(--font-mono);
-  font-variant-numeric: tabular-nums;
-}
-
-/* Film grain over the whole ground — processed, never raw */
-.grain::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 60;
+/* Film grain for imagery — the still sits in the page's material world */
+.grain-overlay {
   pointer-events: none;
+  position: absolute;
+  inset: 0;
   opacity: 0.05;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: 240px 240px;
 }
 
-/* ——— shared motion for the direction variants (d1–d4) ——— */
-@keyframes slot-scan {
-  0% {
-    top: 0%;
-    opacity: 0;
-  }
-  8% {
-    opacity: 1;
-  }
-  92% {
-    opacity: 1;
-  }
-  100% {
-    top: 100%;
-    opacity: 0;
-  }
-}
-@keyframes marquee-x {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
+/* ——— shared motion ——— */
 @keyframes dash-flow {
   to {
     stroke-dashoffset: -24;
@@ -185,7 +124,7 @@ select {
     background-position: 200%;
   }
 }
-/* d5: waitlist success — the constellation's "found" tick */
+/* waitlist success — the constellation's "found" tick */
 @keyframes fade-up {
   from {
     opacity: 0;
@@ -206,7 +145,7 @@ select {
     opacity: 0;
   }
 }
-/* d5: footer Crookes tube fires on hover */
+/* footer Crookes tube fires on hover */
 @keyframes beam-fire {
   0%,
   100% {

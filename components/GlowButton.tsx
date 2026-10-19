@@ -7,7 +7,7 @@
  */
 
 const RED_SWEEP =
-  "linear-gradient(90deg,#e05561,#7a1019,#d8434f,#a31621,#e05561)";
+  "linear-gradient(90deg,var(--color-accent-bright),var(--color-accent-deep),var(--color-accent-glow),var(--color-accent),var(--color-accent-bright))";
 
 export function GlowButton({
   children,
@@ -16,9 +16,9 @@ export function GlowButton({
 }: React.ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
     <button
-      className={`group relative inline-flex cursor-pointer items-center justify-center rounded-md px-6 py-3 text-[14px] font-medium text-[#f5f0e6] transition duration-150 [background-clip:padding-box,border-box,border-box] [background-origin:border-box] [border:1.5px_solid_transparent] bg-[length:200%] [animation:glow-slide_3.5s_linear_infinite] hover:brightness-110 active:scale-[0.96] focus-visible:outline-none disabled:pointer-events-none disabled:opacity-60 ${className ?? ""}`}
+      className={`group relative inline-flex cursor-pointer items-center justify-center rounded-md px-6 py-3 text-[14px] font-medium text-ivory transition duration-150 [background-clip:padding-box,border-box,border-box] [background-origin:border-box] [border:1.5px_solid_transparent] bg-[length:200%] [animation:glow-slide_3.5s_linear_infinite] hover:brightness-110 active:scale-[0.96] focus-visible:outline-none disabled:pointer-events-none disabled:opacity-60 ${className ?? ""}`}
       style={{
-        backgroundImage: `linear-gradient(#a31621,#a31621),linear-gradient(#a31621 50%,rgba(163,22,33,0.55) 80%,rgba(163,22,33,0)),${RED_SWEEP}`,
+        backgroundImage: `linear-gradient(var(--color-accent),var(--color-accent)),linear-gradient(var(--color-accent) 50%,color-mix(in srgb,var(--color-accent) 55%,transparent) 80%,transparent),${RED_SWEEP}`,
       }}
       {...props}
     >

@@ -1,4 +1,4 @@
-const RED = "text-[#a31621]";
+const RED = "text-accent";
 
 /**
  * The Crookes tube — the bulb Röntgen was working with in Würzburg, 1895,
@@ -13,7 +13,7 @@ export function FooterArt() {
         .x-tube:hover .beam { animation: beam-fire 1.1s linear infinite; }
         .x-tube:hover .rays { animation: rays-flicker 1.1s linear infinite; }
       `}</style>
-      <pre className="inline-block text-left font-mono text-[5.5px] leading-[1.3] text-[#17150f]/60" aria-hidden>
+      <pre className="inline-block text-left font-mono text-[5.5px] leading-[1.3] text-ink/60" aria-hidden>
         {`       ┌──────────────┐
     ┌──┘              └──┐
  ───┤ e- `}<span className="beam">{`┄┄┄┄┄┄┄▶`}</span>{` ╱      ├─── +

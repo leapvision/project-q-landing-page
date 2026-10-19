@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import { Archivo, Fragment_Mono } from "next/font/google";
+import { DM_Sans, Fragment_Mono } from "next/font/google";
 import "./globals.css";
 
-const archivo = Archivo({
+const dmSans = DM_Sans({
   subsets: ["latin"],
-  variable: "--font-archivo",
-  axes: ["wdth"],
+  variable: "--font-dm",
 });
 
 const fragment = Fragment_Mono({
@@ -29,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${archivo.variable} ${fragment.variable} antialiased`}
+        className={`${dmSans.variable} ${fragment.variable} antialiased`}
       >
         {children}
       </body>

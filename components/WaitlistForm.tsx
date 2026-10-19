@@ -56,11 +56,10 @@ export function WaitlistForm({ variant }: { variant: "inline" | "full" }) {
   const dark = variant === "full";
   const success = status === "success";
   const field = dark
-    ? "rounded-md border border-[#3a352a] bg-[#201d15] px-4 py-3 text-[15px] text-[#f5f0e6] placeholder:text-[#8a8172] focus:border-[#e05561] focus:outline-none transition-colors"
-    : "rounded-md border border-[#17150f]/30 bg-[#faf6ec] px-4 py-3 text-[14.5px] text-[#17150f] placeholder:text-[#8a8172] focus:border-[#a31621] focus:outline-none transition-colors";
+    ? "rounded-md border border-line-inverse bg-ink-raised px-4 py-3 text-[15px] text-ivory placeholder:text-placeholder focus:border-accent-bright focus:outline-none transition-colors"
+    : "rounded-md border border-ink/30 bg-ivory-raised px-4 py-3 text-[14.5px] text-ink placeholder:text-placeholder focus:border-accent focus:outline-none transition-colors";
   const label =
-    "mb-2 block font-mono text-[10.5px] tracking-[0.18em] text-[#a89f8d] uppercase";
-  const tick = dark ? "#e05561" : "#a31621";
+    "mb-2 block font-mono text-[10.5px] tracking-[0.18em] text-muted-inverse uppercase";
 
   const form =
     variant === "inline" ? (
@@ -83,7 +82,7 @@ export function WaitlistForm({ variant }: { variant: "inline" | "full" }) {
           </GlowButton>
         </div>
         {/* reserved line so an appearing message never shifts the row */}
-        <p aria-live="polite" className="mt-1.5 min-h-[19px] text-[12.5px] text-[#a31621]">
+        <p aria-live="polite" className="mt-1.5 min-h-[19px] text-[12.5px] text-accent">
           {error ||
             (status === "error"
               ? "That didn't go through — check your connection and try again."
@@ -118,7 +117,7 @@ export function WaitlistForm({ variant }: { variant: "inline" | "full" }) {
             autoComplete="email"
             className={`${field} w-full`}
           />
-          {error && <p className="mt-2 text-[12.5px] text-[#e05561]">{error}</p>}
+          {error && <p className="mt-2 text-[12.5px] text-accent-bright">{error}</p>}
         </div>
         <div>
           <label htmlFor="wlf-building" className={label}>
@@ -136,12 +135,12 @@ export function WaitlistForm({ variant }: { variant: "inline" | "full" }) {
           <GlowButton type="submit" disabled={status === "submitting"} className="px-8 py-3.5">
             {status === "submitting" ? "Joining…" : "Join waitlist"}
           </GlowButton>
-          <p className="font-mono text-[10.5px] tracking-[0.18em] text-[#a89f8d] uppercase">
+          <p className="font-mono text-[10.5px] tracking-[0.18em] text-muted-inverse uppercase">
             early access · onboarding in waves
           </p>
         </div>
         {status === "error" && (
-          <p className="text-[13px] text-[#e05561]">
+          <p className="text-[13px] text-accent-bright">
             That didn&apos;t go through — check your connection and try again.
           </p>
         )}
@@ -173,19 +172,19 @@ export function WaitlistForm({ variant }: { variant: "inline" | "full" }) {
       {success && (
         <p
           role="status"
-          className={`flex items-center gap-3 text-[15px] ${dark ? "text-[#f5f0e6]" : "text-[#17150f]"}`}
+          className={`flex items-center gap-3 text-[15px] ${dark ? "text-ivory" : "text-ink"}`}
           style={{ animation: "fade-up 0.6s cubic-bezier(0.16,1,0.3,1) 0.4s both" }}
         >
           {/* the constellation's "found" mark: red tick, faint ring, one pulse */}
-          <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden className="shrink-0 overflow-visible">
-            <circle cx="12" cy="12" r="3.2" fill={tick} />
-            <circle cx="12" cy="12" r="7" fill="none" stroke={tick} strokeOpacity="0.35" strokeWidth="1" />
+          <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden className={`shrink-0 overflow-visible ${dark ? "text-accent-bright" : "text-accent"}`}>
+            <circle cx="12" cy="12" r="3.2" fill="currentColor" />
+            <circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" strokeOpacity="0.35" strokeWidth="1" />
             <circle
               cx="12"
               cy="12"
               r="7"
               fill="none"
-              stroke={tick}
+              stroke="currentColor"
               strokeWidth="1"
               style={{
                 transformBox: "fill-box",
