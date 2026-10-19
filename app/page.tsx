@@ -119,8 +119,8 @@ export default function D5() {
           </a>
           <nav className="flex items-center gap-8">
             <div className={`${MONO} hidden items-center gap-7 text-muted md:flex`}>
-              <a href="#platform" className="transition-colors hover:text-ink">platform</a>
               <a href="#infrastructure" className="transition-colors hover:text-ink">infrastructure</a>
+              <a href="#platform" className="transition-colors hover:text-ink">platform</a>
               <a href="#teams" className="transition-colors hover:text-ink">teams</a>
             </div>
             <a href="#waitlist" className={`${BTN_RED} px-5 py-2.5 text-[13.5px]`}>
@@ -316,6 +316,25 @@ export default function D5() {
           </div>
         </section>
 
+        {/* team stories */}
+        <section id="teams" className="mx-auto max-w-[1400px] px-6 pt-20 md:px-10 md:pt-28">
+          <Reveal>
+            <h2 className="text-[clamp(1.7rem,3.2vw,2.9rem)] leading-[1.08] font-light tracking-[-0.02em]">
+              Built for the whole imaging-data team.
+            </h2>
+          </Reveal>
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            {STORIES.map((s, i) => (
+              <Reveal key={s.role} delay={i * 80}>
+                <div className="h-full rounded-md border border-ink/15 bg-ivory-raised p-7 transition-[border-color,transform] duration-300 hover:-translate-y-[3px] hover:border-ink/35">
+                  <span className={`${MONO} text-accent`}>{s.role}</span>
+                  <p className="mt-4 text-[16px] leading-relaxed">{s.line}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+
         {/* split module — early access */}
         <section id="early-access" className="mx-auto max-w-[1400px] px-6 pt-20 pb-6 md:px-10 md:pt-24">
           <div className="grid items-center gap-10 rounded-md border border-ink/15 p-7 md:grid-cols-2 md:p-12">
@@ -353,25 +372,6 @@ export default function D5() {
             </div>
             </Reveal>
             <EarlyAccessFigure />
-          </div>
-        </section>
-
-        {/* team stories */}
-        <section id="teams" className="mx-auto max-w-[1400px] px-6 pt-20 md:px-10 md:pt-28">
-          <Reveal>
-            <h2 className="text-[clamp(1.7rem,3.2vw,2.9rem)] leading-[1.08] font-light tracking-[-0.02em]">
-              Built for the whole imaging-data team.
-            </h2>
-          </Reveal>
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            {STORIES.map((s, i) => (
-              <Reveal key={s.role} delay={i * 80}>
-                <div className="h-full rounded-md border border-ink/15 bg-ivory-raised p-7 transition-[border-color,transform] duration-300 hover:-translate-y-[3px] hover:border-ink/35">
-                  <span className={`${MONO} text-accent`}>{s.role}</span>
-                  <p className="mt-4 text-[16px] leading-relaxed">{s.line}</p>
-                </div>
-              </Reveal>
-            ))}
           </div>
         </section>
 
